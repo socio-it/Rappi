@@ -1,29 +1,14 @@
-from fastapi import APIRouter, Query
+from mcp.server.fastmcp import FastMCP
 
-router = APIRouter(prefix="/mcp", tags=["mcp"])
+mcp = FastMCP(name="FastAPI MCP Server")
 
-# --- Endpoint base para comprobar si el MCP está activo ---
-@router.get("/ping")
-async def ping():
-    return {"mcp_status": "alive"}
+@mcp.tool()
+def ping() -> str:
+    return "alive"
 
-# --- Herramienta MCP: sumar dos números ---
-def mcp_sum(a: float, b: float) -> float:
-    """
-    Suma dos números y devuelve el resultado.
-    """
+@mcp.tool()
+def sum(a: float, b: float) -> float:
     return a + b
 
-# --- Endpoint para acceder a la herramienta vía API ---
-@router.get("/sum")
-async def sum_endpoint(
-    a: float = Query(..., description="Primer número"),
-    b: float = Query(..., description="Segundo número")
-):
-    """
-    Endpoint que llama a la herramienta MCP de suma.
-    """
-    result = mcp_sum(a, b)
-    return {"a": a, "b": b, "result": result}
-
-__all__ = ["router", "mcp_sum"]
+# mcp 1.17 -> usar transporte SSE
+mcp_app = mcp.sse_app()  # OJO: llamado como función
