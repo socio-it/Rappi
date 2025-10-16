@@ -1,17 +1,33 @@
+
 version: "3.9"
 
 services:
   mcp-api:
-    container_name: mcp-api
+    container_name: fastapi
     build:
       context: .
       dockerfile: Dockerfile
-    ports:
-      - "8000:8000"
+    restart: unless-stopped
+    expose:
+      - "8000"
     environment:
       - PYTHONUNBUFFERED=1
-      - PORT=8000
       - ENV=production
-    restart: always
-    volumes:
-      - .:/app
+    networks:
+      - web
+    labels:
+      - traefik.enable=true
+      - traefik.http.routers.mcp-api.rule=Host(`fastapi.socio.it.com`)
+      - traefik.http.routers.mcp-api.entrypoints=websecure
+      - traefik.http.routers.mcp-api.tls.certresolver=lets
+      - traefik.http.services.mcp-api.loadbalancer.server.port=8000
+      # Redirección HTTP → HTTPS
+      - traefik.http.middlewares.force-https.redirectscheme.scheme=https
+      - traefik.http.routers.mcp-api-http.rule=Host(`fastapi.socio.it.com`)
+      - traefik.http.routers.mcp-api-http.entrypoints=web
+      - traefik.http.routers.mcp-api-http.middlewares=force-https
+
+networks:
+  web:
+    external: true
+

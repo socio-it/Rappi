@@ -1,0 +1,12 @@
+2025-10-16T03:42:02.894125 Project directory: /srv/apps/fastapi
+2025-10-16T03:42:02.894368 Deploying project
+2025-10-16T03:42:02.895229 ------------------------------
+2025-10-16T03:42:02.980073 time="2025-10-16T03:42:02Z" level=warning msg="/srv/apps/fastapi/docker-compose.yaml: the attribute `version` is obsolete, it will be ignored, please remove it to avoid potential confusion"
+2025-10-16T03:42:02.985198  Container mcp-api  Stopping
+2025-10-16T03:42:03.362538  Container mcp-api  Stopped
+2025-10-16T03:42:03.362610  Container mcp-api  Removing
+2025-10-16T03:42:03.380442  Container mcp-api  Removed
+2025-10-16T03:42:03.380504  Container fastapi  Creating
+2025-10-16T03:42:03.389930 Error response from daemon: No such image: fastapi-fastapi:latest
+2025-10-16T03:42:03.396322 ------------------------------
+2025-10-16T03:42:03.396356 Project deployment failed
